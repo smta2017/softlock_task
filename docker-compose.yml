@@ -1,0 +1,26 @@
+version: '3.3'
+
+services:
+    app:
+        build: ./docker/php
+        container_name: exam_app
+        volumes:
+            - ./:/var/www/html
+            - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+        networks:
+            - exam-network
+    nginx:
+        container_name: exam_nginx
+        image: nginx:stable-alpine
+        ports:
+            - "8083:80"
+        volumes:
+           - ./:/var/www/html
+           - ./docker/nginx:/etc/nginx/conf.d
+        networks:
+            - exam-network
+
+
+networks:
+    exam-network:
+        driver: bridge
